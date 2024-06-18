@@ -1,6 +1,6 @@
-import express from 'express';
 import sqlite from 'better-sqlite3';
 import cors from 'cors';
+import express from 'express';
 
 const DUMMY_NEWS = [
   {
@@ -48,6 +48,15 @@ const DUMMY_NEWS = [
     content:
       'Landscape photography is a great way to capture the beauty of nature. It is also a great way to get outside and enjoy the great outdoors. So what are you waiting for? Get out there and start taking some pictures!',
   },
+  {
+    id: 'n6',
+    slug: 'new-landscape',
+    title: 'The beauty of new landscape',
+    image: 'landscape.jpg',
+    date: '2022-07-01',
+    content:
+      'Landscape photography is a great way to capture the beauty of nature. It is also a great way to get outside and enjoy the great outdoors. So what are you waiting for? Get out there and start taking some pictures!',
+  },
 ];
 
 const db = sqlite('data.db');
@@ -72,10 +81,17 @@ function initDb() {
 
 const app = express();
 
-app.use(cors())
+app.use(cors());
 
-app.get('/news', (req, res) => {
+app.get('/news', async (req, res) => {
   const news = db.prepare('SELECT * FROM news').all();
+  console.log({ news, length: news.length });
+  await new Promise((resolve) =>
+    setTimeout(() => {
+      console.log('I got triggered');
+      resolve();
+    }, 5000)
+  );
   res.json(news);
 });
 

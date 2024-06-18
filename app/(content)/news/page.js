@@ -1,11 +1,15 @@
 import NewsList from '@/components/news-list/news-list.component';
-import { DUMMY_NEWS } from '@/data/dummy-news';
 
-const NewsPage = () => {
+const NewsPage = async () => {
+  const response = await fetch('http://localhost:8080/news');
+  const news = await response.json();
+
+  console.log({ news });
+
   return (
     <div>
       <h1>News Page</h1>
-      <NewsList news={DUMMY_NEWS} />
+      <NewsList news={news} />
     </div>
   );
 };
